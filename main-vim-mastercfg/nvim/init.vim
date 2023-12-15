@@ -14,6 +14,7 @@ Plug 'honza/vim-snippets'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'rust-lang/rust.vim'
+Plug 'zig-lang/zig.vim'
 Plug 'tpope/vim-fireplace'
 Plug 'ekalinin/dockerfile.vim'
 Plug 'moll/vim-node'
@@ -158,3 +159,8 @@ let g:airline_theme='random'
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<C-F>"
 let g:UltiSnipsJumpBackwardTrigger="<C-B>"
+
+
+" Mapping of commands
+" This will delete the row where you are standing without copying it to the register
+nmap <leader>bh "_dw <Esc>

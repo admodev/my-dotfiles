@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -106,6 +106,10 @@
   # $ nix search wget
   # For packages with versions, like installing go 1.22 I personally use the explicit version on my user packages section, like this: go_1_22, so I can change versions seamlessly
   home-manager.users.admodevops = { pkgs, ... }: {
+    nixpkgs.config = {
+        allowUnfree = true;
+        allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "spotify" ];
+    };
     home.packages = with pkgs; [
         home-manager
 	ripgrep
@@ -123,6 +127,7 @@
         erlang
 	nodejs_22
 	go_1_22
+	spotify
     ];
 
     home.stateVersion = "25.05";
@@ -152,10 +157,11 @@
   virtualisation.docker.enable = true;
   programs.git.enable = true;
   programs.bash = {
-    enableCompletion = true;
+    completion.enable = true;
   };
   environment.shellInit = ''
     # Add system-wide shell initialization here
+    OSH_THEME="brainy"
   '';
   environment.interactiveShellInit = ''
     if [ ! -d "$HOME/.oh-my-bash" ]; then
@@ -166,7 +172,7 @@
     ll = "ls -l";
     la = "ls -la";
     edit-config = "sudo nvim /etc/nixos/configuration.nix";
-    update-system = "sudo nixos-rebuild switch";
+    update-system = "export NIXPKGS_ALLOW_UNFREE=1 && sudo nixos-rebuild switch --impure";
     update = "sudo nix-channel --update";
     delete-garbage = "sudo nix-collect-garbage -d";
   };
